@@ -43,12 +43,13 @@ d3.json("miserables.json", function(error, graph) {
     .selectAll("circle")
     .data(graph.nodes)
     .enter().append("circle")
-      .attr("r", 5)
+      .attr("r", 15)
       .attr("fill", function(d) { return color(d.group); })
       .call(d3.drag()
           .on("start", dragstarted)
           .on("drag", dragged)
-          .on("end", dragended));
+          .on("end", dragended))
+          .on("click", onClick);
 
   node.append("title")
       .text(function(d) { return d.id; });
@@ -89,5 +90,10 @@ function dragended(d) {
   d.fx = null;
   d.fy = null;
 }
+
+function onClick(d){
+    console.log("clicked on");
+    console.log(d);
+   }
 
 </script>
