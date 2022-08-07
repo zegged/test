@@ -49,6 +49,7 @@ var svg = d3.select("svg")
     polygon,
     centroid,
     node,
+    alpha_cent=0.1,
     link,
     curveTypes = ['curveBasisClosed', 'curveCardinalClosed', 'curveCatmullRomClosed', 'curveLinearClosed'];
 //     width = +svg.attr("width"),
@@ -59,7 +60,7 @@ var color = d3.scaleOrdinal(d3.schemeCategory20);
 
 var simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(function(d) { return d.id; }).strength(function(link) {   
-      if (link.source.group == link.source.target) {
+      if (link.source.group == link.target.group) {
         return 1; // stronger link for links within a group
       }
       else {
@@ -82,6 +83,7 @@ function zoom_actions(){
     g.attr("transform", d3.event.transform)
     // label
     // .style("font-size", 40);
+    node.attr("r", function(d) { return d.radius - 3; })
 }
 
 window.addEventListener('resize', function () {
@@ -95,7 +97,8 @@ svg
 });
 
 var data;
-d3.json("subjects.json", function(error, graph) {
+// d3.json("subjects.json", function(error, graph) {
+d3.json("miserables.json", function(error, graph) {
   if (error) throw error;
     data=graph;
 
@@ -203,14 +206,16 @@ var label = g.append("g")
         .attr("y2", function(d) { return d.target.y; });
 
     node
-        .each(collide(.5))
-        .attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
+    .each(collide(.1))
+    .attr("cx", function(d) { return d.x; })
+    .attr("cy", function(d) { return d.y; });
     
     label.attr("x", function(d){ return d.x; })
          .attr("y", function (d) {return d.y - 10; });
 
          updateGroups();
+         alpha_cent=alpha_cent-0.0001
+        //  update_move2cent(alpha_cent);
   }
 
   function collide(alpha) {
@@ -289,6 +294,68 @@ function updateGroups() {
 
     d3.select(path.node().parentNode).attr('transform', 'translate('  + centroid[0] + ',' + (centroid[1]) + ') scale(' + scaleFactor + ')');
   });
+}
+
+function update_move2cent(alpha) {
+    // don't modify points close the the group centroid:
+var minDistance = 10;
+
+// modify the min distance as the force cools:
+if (alpha < 0.1) {
+    minDistance = 10 + (1000 * (0.1-alpha))
+}
+
+// adjust each point if needed towards group centroid:
+node.each(function(d) {
+    var cx = centroids[d.group].x;
+    var cy = centroids[d.group].y;
+    var x = d.x;
+    var y = d.y;
+    var dx = cx - x;
+    var dy = cy - y;
+
+    var r = Math.sqrt(dx*dx+dy*dy)
+
+    if (r>minDistance) {
+        d.x = x * 0.9 + cx * 0.1;
+        d.y = y * 0.9 + cy * 0.1;
+    }
+})
+}
+
+// var nodes = this.nodes();
+var coords ={};
+var groups = [];
+
+// sort the nodes into groups:  
+node.each(function(d) {
+    if (groups.indexOf(d.group) == -1 ) {
+        groups.push(d.group);
+        coords[d.group] = [];
+    }
+    coords[d.group].push({x:d.x,y:d.y});    
+})
+
+// get the centroid of each group:
+var centroids = {};
+
+for (var group in coords) {
+    var groupNodes = coords[group];
+    var n = groupNodes.length;
+    var cx = 0;
+    var tx = 0;
+    var cy = 0;
+    var ty = 0;
+
+    groupNodes.forEach(function(d) {
+        tx += d.x;
+        ty += d.y;
+    })
+
+    cx = tx/n;
+    cy = ty/n;
+
+    centroids[group] = {x: cx, y: cy}   
 }
 
   var tip;
