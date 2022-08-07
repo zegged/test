@@ -13,8 +13,11 @@
 }
 
 </style>
-<svg width="960" height="600"></svg>
+<svg width="960" height="600">
+    <g></g>
+</svg>
 <script src="https://d3js.org/d3.v4.min.js"></script>
+<!-- <script src="https://d3js.org/d3.v7.min.js"></script> -->
 <script>
 
 var svg = d3.select("svg"),
@@ -28,17 +31,30 @@ var simulation = d3.forceSimulation()
     .force("charge", d3.forceManyBody())
     .force("center", d3.forceCenter(width / 2, height / 2));
 
+    var g = svg.append("g")
+    .attr("class", "everything");
+
+var zoom_handler = d3.zoom()
+.on("zoom", zoom_actions);
+
+zoom_handler(svg);    
+
+//Zoom functions 
+function zoom_actions(){
+    g.attr("transform", d3.event.transform)
+}
+
 d3.json("miserables.json", function(error, graph) {
   if (error) throw error;
 
-  var link = svg.append("g")
+  var link = g.append("g")
       .attr("class", "links")
     .selectAll("line")
     .data(graph.links)
     .enter().append("line")
       .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
 
-  var node = svg.append("g")
+  var node = g.append("g")
       .attr("class", "nodes")
     .selectAll("circle")
     .data(graph.nodes)
@@ -52,7 +68,7 @@ d3.json("miserables.json", function(error, graph) {
           .on("end", dragended))
           .on("click", onClick);
 
-var label = svg.append("g")
+var label = g.append("g")
       .attr("class", "labels")
       .selectAll(".mytext")
     .data(graph.nodes)
@@ -179,6 +195,8 @@ function dragended(d) {
   d.fx = null;
   d.fy = null;
 }
+
+
 
 
 
