@@ -88,7 +88,8 @@ function onClick(d){
     if (tip) tip.remove();
 
     tip  = svg.append("g")
-      .attr("transform", "translate(" + d.x  + "," + d.y + ")");
+      .attr("transform", "translate(" + d.x  + "," + d.y + ")")
+      .on("click", onClick_tip);
 
     var rect = tip.append("rect")
       .style("fill", "white")
@@ -130,6 +131,11 @@ function onClick_outside(d){
         return;
     }
     tip.remove();
+}
+
+function onClick_tip(d){
+    console.log("tip")
+    picked = true;
 }
 
    d3.select("body").on("click", onClick_outside);
