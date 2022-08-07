@@ -71,7 +71,7 @@ d3.json("miserables.json", function(error, graph) {
 
     var arrayLength = data.nodes.length;
 for (var i = 0; i < arrayLength; i++) {
-    data.nodes[i].radius=8;
+    data.nodes[i].radius=7;
     //Do something
 }
 
@@ -107,7 +107,7 @@ var label = g.append("g")
     .style("text-anchor", "middle")
     .style("fill", "#555")
     .style("font-family", "Arial")
-    .style("font-size", 6);
+    .style("font-size", 8);
 
     
 
@@ -142,7 +142,7 @@ var label = g.append("g")
 
   function collide(alpha) {
     var maxRadius = 15;
-    var padding = 3;
+    var padding = 5;
     var n = data.nodes.length;
     // console.log(n);
 //   var quadtree = d3.geom.quadtree(data.nodes);
