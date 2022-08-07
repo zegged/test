@@ -49,7 +49,7 @@ var svg = d3.select("svg")
     polygon,
     centroid,
     node,
-    alpha_cent=0.1,
+    alpha_cent=.5,
     link,
     curveTypes = ['curveBasisClosed', 'curveCardinalClosed', 'curveCatmullRomClosed', 'curveLinearClosed'];
 //     width = +svg.attr("width"),
@@ -206,7 +206,7 @@ var label = g.append("g")
         .attr("y2", function(d) { return d.target.y; });
 
     node
-    .each(collide(.1))
+    .each(collide(.5))
     .attr("cx", function(d) { return d.x; })
     .attr("cy", function(d) { return d.y; });
     
@@ -214,8 +214,8 @@ var label = g.append("g")
          .attr("y", function (d) {return d.y - 10; });
 
          updateGroups();
-         alpha_cent=alpha_cent-0.0001
-        //  update_move2cent(alpha_cent);
+         alpha_cent=alpha_cent*0.999
+         update_move2cent(alpha_cent);
   }
 
   function collide(alpha) {
@@ -298,11 +298,11 @@ function updateGroups() {
 
 function update_move2cent(alpha) {
     // don't modify points close the the group centroid:
-var minDistance = 10;
+var minDistance = 1000;
 
 // modify the min distance as the force cools:
 if (alpha < 0.1) {
-    minDistance = 10 + (1000 * (0.1-alpha))
+    minDistance = 1000 + (1000 * (0.1-alpha))
 }
 
 // adjust each point if needed towards group centroid:
@@ -317,6 +317,7 @@ node.each(function(d) {
     var r = Math.sqrt(dx*dx+dy*dy)
 
     if (r>minDistance) {
+        // console.log(r);
         d.x = x * 0.9 + cx * 0.1;
         d.y = y * 0.9 + cy * 0.1;
     }
