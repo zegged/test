@@ -20,10 +20,17 @@
 <!-- <script src="https://d3js.org/d3.v7.min.js"></script> -->
 <script>
 
-var svg = d3.select("svg"),
-    width = +svg.attr("width"),
+var svg = d3.select("svg")
+.style("height", 100 + '%')
+.style("width", 100 + '%')
+
+    width = +svg.attr("width");
     height = +svg.attr("height");
 
+//     width = +svg.attr("width"),
+//     height = +svg.attr("height");.attr("width", '100%') // percent width
+//   .attr("height", 100%) // percent height
+  
 var color = d3.scaleOrdinal(d3.schemeCategory20);
 
 var simulation = d3.forceSimulation()
@@ -43,6 +50,14 @@ zoom_handler(svg);
 function zoom_actions(){
     g.attr("transform", d3.event.transform)
 }
+
+window.addEventListener('resize', function () {
+// select svg and resize accordingly
+console.log("resize");
+svg
+.style("height", 100 + '%')
+.style("width", 100 + '%')
+});
 
 d3.json("miserables.json", function(error, graph) {
   if (error) throw error;
