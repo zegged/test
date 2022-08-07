@@ -42,7 +42,8 @@ d3.json("miserables.json", function(error, graph) {
       .attr("class", "nodes")
     .selectAll("circle")
     .data(graph.nodes)
-    .enter().append("circle")
+    .enter()
+    .append("circle")
       .attr("r", 15)
       .attr("fill", function(d) { return color(d.group); })
       .call(d3.drag()
@@ -51,7 +52,24 @@ d3.json("miserables.json", function(error, graph) {
           .on("end", dragended))
           .on("click", onClick);
 
+var label = svg.append("g")
+      .attr("class", "labels")
+      .selectAll(".mytext")
+    .data(graph.nodes)
+    .enter()
+    .append("text")
+    .text(function (d) { return d.id; })
+    .style("text-anchor", "middle")
+    .style("fill", "#555")
+    .style("font-family", "Arial")
+    .style("font-size", 12);
+
+    
+
   node.append("title")
+      .text(function(d) { return d.id; });
+
+  node.append("text")
       .text(function(d) { return d.id; });
 
   simulation
@@ -71,6 +89,9 @@ d3.json("miserables.json", function(error, graph) {
     node
         .attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
+    
+    label.attr("x", function(d){ return d.x; })
+         .attr("y", function (d) {return d.y - 10; });
   }
 
 
