@@ -72,6 +72,67 @@ d3.json("miserables.json", function(error, graph) {
         .attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
   }
+
+
+  var tip;
+  var picked = false;
+function onClick(d){
+    console.log("node")
+    console.log(d);
+    picked = true;
+    // alert("You clicked on node " + d.id);
+    // if (d===undefined){
+    //     // tip.remove();
+    //     return;
+    // }
+    if (tip) tip.remove();
+
+    tip  = svg.append("g")
+      .attr("transform", "translate(" + d.x  + "," + d.y + ")");
+
+    var rect = tip.append("rect")
+      .style("fill", "white")
+      .style("stroke", "steelblue");
+
+    tip.append("text")
+      .text("Name: " + d.name)
+      .attr("dy", "1em")
+      .attr("x", 5);
+
+    tip.append("text")
+      .text("Info: " + d.info)
+      .attr("dy", "2em")
+      .attr("x", 5);
+
+      // var con = link
+      var con = graph.links
+      .filter(function(d1){
+        return d1.source.id === d.id;
+      })
+      .map(function(d1){
+        return d1.target.name + " with weight " + d1.weight;
+      })
+
+    tip.append("text")
+      .text("Connected to: " + con.join(","))
+      .attr("dy", "3em")
+      .attr("x", 5);
+
+    var bbox = tip.node().getBBox();
+    rect.attr("width", bbox.width + 5)
+        .attr("height", bbox.height + 5)
+   }
+
+function onClick_outside(d){
+    console.log("body")
+    if (picked===true){
+        picked=false;
+        return;
+    }
+    tip.remove();
+}
+
+   d3.select("body").on("click", onClick_outside);
 });
 
 function dragstarted(d) {
@@ -91,9 +152,6 @@ function dragended(d) {
   d.fy = null;
 }
 
-function onClick(d){
-    console.log("clicked on");
-    console.log(d);
-   }
+
 
 </script>
