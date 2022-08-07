@@ -96,14 +96,15 @@ function onClick(d){
       .style("stroke", "steelblue");
 
     tip.append("text")
-      .text("Name: " + d.name)
+      .text("Name: " + d.id)
       .attr("dy", "1em")
       .attr("x", 5);
 
     tip.append("text")
-      .text("Info: " + d.info)
+      .text("Info: " + d.id)
       .attr("dy", "2em")
-      .attr("x", 5);
+      .attr("x", 5)
+      .on("click", function() { window.open("https://www.random.com/" + d.id ); }); 
 
       // var con = link
       var con = graph.links
