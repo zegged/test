@@ -59,8 +59,17 @@ svg
 .style("width", 100 + '%')
 });
 
+var data;
 d3.json("miserables.json", function(error, graph) {
   if (error) throw error;
+    data=graph;
+
+
+    var arrayLength = data.nodes.length;
+for (var i = 0; i < arrayLength; i++) {
+    data.nodes[i].radius=5;
+    //Do something
+}
 
   var link = g.append("g")
       .attr("class", "links")
@@ -75,13 +84,14 @@ d3.json("miserables.json", function(error, graph) {
     .data(graph.nodes)
     .enter()
     .append("circle")
-      .attr("r", 15)
-      .attr("fill", function(d) { return color(d.group); })
-      .call(d3.drag()
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended))
-          .on("click", onClick);
+    .attr("r", function(d) { return d.radius; })
+    .attr("fill", function(d) { return color(d.group); })
+    .call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended))
+        .on("click", onClick);
+    //   .attr("r", 15)
 
 var label = g.append("g")
       .attr("class", "labels")
@@ -93,7 +103,7 @@ var label = g.append("g")
     .style("text-anchor", "middle")
     .style("fill", "#555")
     .style("font-family", "Arial")
-    .style("font-size", 12);
+    .style("font-size", 8);
 
     
 
@@ -118,6 +128,7 @@ var label = g.append("g")
         .attr("y2", function(d) { return d.target.y; });
 
     node
+        .each(collide(.5))
         .attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
     
@@ -125,6 +136,46 @@ var label = g.append("g")
          .attr("y", function (d) {return d.y - 10; });
   }
 
+  function collide(alpha) {
+    var maxRadius = 15;
+    var padding = 3;
+    var n = data.nodes.length;
+    // console.log(n);
+//   var quadtree = d3.geom.quadtree(data.nodes);
+var quadtree = d3.quadtree()
+  .x(function (d) { return d.x; })
+  .y(function (d) { return d.y; })
+  .extent([[-1, -1], [width + 1, height + 1]])
+  .addAll(data.nodes);
+  return function(d) {
+    var r = d.radius + maxRadius + padding,
+        nx1 = d.x - r,
+        nx2 = d.x + r,
+        ny1 = d.y - r,
+        ny2 = d.y + r;
+    quadtree.visit(function(quad, x1, y1, x2, y2) {
+        // console.log(quad);
+        // if (quad.data){
+        //     console.log("1");
+        // }
+      if (quad.data && (quad.data !== d)) {
+        // console.log("collision");
+        var x = d.x - quad.data.x,
+            y = d.y - quad.data.y,
+            l = Math.sqrt(x * x + y * y),
+            r = d.radius + quad.data.radius + padding;
+        if (l < r) {
+          l = (l - r) / l * alpha;
+          d.x -= x *= l;
+          d.y -= y *= l;
+          quad.data.x += x;
+          quad.data.y += y;
+        }
+      }
+      return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+    });
+  };
+}
 
   var tip;
   var picked = false;
