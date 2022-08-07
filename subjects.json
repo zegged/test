@@ -1,0 +1,105 @@
+{
+    "nodes": [
+      {"id": "Chemistry 101", "group": 1},
+      {"id": "Atomic structure and the Periodic Table", "group": 1},
+      {"id": "Structure and bonding", "group": 1},
+      {"id": "Stoichiometry", "group": 1},
+      {"id": "Biology 101", "group": 2},
+      {"id": "Organisms", "group": 2},
+      {"id": "Physics 101", "group": 3},
+      {"id": "Acoustics", "group": 3},
+      {"id": "Electricity", "group": 3},
+      {"id": "Organic Chemistry 101", "group": 4},
+      {"id": "IUPAC naming", "group": 4},
+      {"id": "Alkanes", "group": 4},
+      {"id": "Alkenes", "group": 4},
+      {"id": "Neuroscience 101", "group": 5},
+      {"id": "Biomedical Engineering", "group": 6},
+      {"id": "Otolaryngology", "group": 7},
+      {"id": "M.S. in E.N.T", "group": 8},
+      {"id": "Anatomy", "group": 8},
+      {"id": "Bacteriology", "group": 8},
+      {"id": "Pathology", "group": 8},
+      {"id": "Physiology", "group": 8},
+      {"id": "Audiology", "group": 8},
+
+      {"id": "Pharmacology", "group": 9},
+
+      {"id": "Med School", "group": 10},
+      {"id": "Biology 105", "group": 10},
+      {"id": "Neuroanatomy", "group": 10},
+      {"id": "Biochemistry 101", "group": 11},
+      {"id": "BioEngineering", "group": 12},
+      {"id": "Biochemistry", "group": 13},
+
+
+
+
+      
+
+
+
+      {"id": "Tinnitus 101", "group": 0}
+
+    ],
+    "links": [
+      {"source": "Atomic structure and the Periodic Table", "target": "Chemistry 101", "value": 2},
+      {"source": "Structure and bonding", "target": "Chemistry 101", "value": 2},
+      {"source": "Stoichiometry", "target": "Chemistry 101", "value": 2},
+      {"source": "Organisms", "target": "Biology 101", "value": 2},
+      {"source": "Acoustics", "target": "Physics 101", "value": 2},
+      {"source": "Electricity", "target": "Physics 101", "value": 2},
+      {"source": "Chemistry 101", "target": "Organic Chemistry 101", "value": 1},
+      {"source": "Chemistry 101", "target": "Biochemistry 101", "value": 1},
+
+      {"source": "Biology 101", "target": "Organic Chemistry 101", "value": 1},
+      {"source": "Biology 101", "target": "Biology 105", "value": 1},
+      {"source": "Biology 101", "target": "Biochemistry 101", "value": 1},
+
+      {"source": "IUPAC naming", "target": "Organic Chemistry 101", "value": 2},
+      {"source": "Alkanes", "target": "Organic Chemistry 101", "value": 2},
+      {"source": "Alkenes", "target": "Organic Chemistry 101", "value": 2},
+      {"source": "Alkanes", "target": "IUPAC naming", "value": 2},
+      {"source": "Alkenes", "target": "IUPAC naming", "value": 2},
+      {"source": "Organic Chemistry 101", "target": "Neuroscience 101", "value": 1},
+      {"source": "Organic Chemistry 101", "target": "M.S. in E.N.T", "value": 1},
+      {"source": "Neuroscience 101", "target": "Tinnitus 101", "value": 1},
+      {"source": "Biomedical Engineering", "target": "Tinnitus 101", "value": 1},
+      {"source": "Otolaryngology", "target": "Tinnitus 101", "value": 1},
+      {"source": "M.S. in E.N.T", "target": "Tinnitus 101", "value": 1},
+      {"source": "Anatomy", "target": "M.S. in E.N.T", "value": 2},
+      {"source": "Bacteriology", "target": "M.S. in E.N.T", "value": 2},
+      {"source": "Pathology", "target": "M.S. in E.N.T", "value": 2},
+      {"source": "Physiology", "target": "M.S. in E.N.T", "value": 2},
+      {"source": "Audiology", "target": "M.S. in E.N.T", "value": 2},
+      {"source": "Med School", "target": "M.S. in E.N.T", "value": 2},
+      {"source": "Med School", "target": "Tinnitus 101", "value": 2},
+      {"source": "Biology 105", "target": "Med School", "value": 1},
+      {"source": "Neuroanatomy", "target": "Med School", "value": 1},
+      {"source": "Neuroanatomy", "target": "Neuroscience 101", "value": 2},
+      {"source": "Biochemistry 101", "target": "Tinnitus 101", "value": 2},
+
+
+
+
+
+
+
+
+      {"source": "M.S. in E.N.T", "target": "Pharmacology", "value": 2},
+
+      {"source": "Pharmacology", "target": "Tinnitus 101", "value": 2},
+
+      
+
+
+
+
+      {"source": "Electricity", "target": "Chemistry 101", "value": 2}
+
+
+
+    ]
+  }
+  
+  
