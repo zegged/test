@@ -49,6 +49,8 @@ zoom_handler(svg);
 //Zoom functions 
 function zoom_actions(){
     g.attr("transform", d3.event.transform)
+    // label
+    // .style("font-size", 40);
 }
 
 window.addEventListener('resize', function () {
@@ -57,6 +59,8 @@ console.log("resize");
 svg
 .style("height", 100 + '%')
 .style("width", 100 + '%')
+
+
 });
 
 var data;
@@ -67,7 +71,7 @@ d3.json("miserables.json", function(error, graph) {
 
     var arrayLength = data.nodes.length;
 for (var i = 0; i < arrayLength; i++) {
-    data.nodes[i].radius=5;
+    data.nodes[i].radius=8;
     //Do something
 }
 
@@ -103,7 +107,7 @@ var label = g.append("g")
     .style("text-anchor", "middle")
     .style("fill", "#555")
     .style("font-family", "Arial")
-    .style("font-size", 8);
+    .style("font-size", 6);
 
     
 
